@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥚 零鸡蛋小窝 · 琉Q的鸡蛋小铺 🥚</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --peach: #FFD3BA;
+    --pink: #FFB6D9;
+    --rose: #FF8FB1;
+    --lavender: #C8B6FF;
+    --mint: #B8E6D0;
+    --sky: #B8E0F6;
+    --lemon: #FFF2A8;
+    --cream: #FFF8F0;
+    --butter: #FFE5B4;
+    --coral: #FFA89F;
+    --ink: #5B4A6E;
+    --ink-soft: #8B7AA0;
+    --ink-light: #B5A8C8;
+    --card: #FFFEFB;
+    --card-shadow: rgba(255, 143, 177, 0.18);
+    --gold: #F5C242;
+    --egg-yolk: #FFB84D;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+  body {
+    font-family: 'Fredoka', 'ZCOOL KuaiLe', -apple-system, system-ui, sans-serif;
+    background: linear-gradient(135deg, #FFE5EC 0%, #FFF0DC 25%, #E5F4FF 50%, #F0E5FF 75%, #FFE5F4 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--ink);
+    position: relative;
+    padding-bottom: 60px;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255, 182, 217, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 80% 30%, rgba(200, 182, 255, 0.25) 0%, transparent 35%),
+      radial-gradient(circle at 50% 80%, rgba(184, 230, 208, 0.3) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(255, 242, 168, 0.25) 0%, transparent 35%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .floating-eggs { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  .floating-eggs span { position: absolute; font-size: 28px; opacity: 0.35; animation: floatUp 18s linear infinite; }
+  .floating-eggs span:nth-child(1) { left: 8%; animation-delay: 0s; animation-duration: 22s; }
+  .floating-eggs span:nth-child(2) { left: 22%; animation-delay: 3s; animation-duration: 18s; }
+  .floating-eggs span:nth-child(3) { left: 38%; animation-delay: 6s; animation-duration: 25s; }
+  .floating-eggs span:nth-child(4) { left: 55%; animation-delay: 1s; animation-duration: 20s; }
+  .floating-eggs span:nth-child(5) { left: 70%; animation-delay: 8s; animation-duration: 23s; }
+  .floating-eggs span:nth-child(6) { left: 85%; animation-delay: 4s; animation-duration: 19s; }
+  .floating-eggs span:nth-child(7) { left: 92%; animation-delay: 10s; animation-duration: 21s; }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.35; }
+    90% { opacity: 0.35; }
+    100% { transform: translateY(-15vh) rotate(360deg); opacity: 0; }
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 20px; position: relative; z-index: 2; }
+  header { text-align: center; margin-bottom: 36px; position: relative; }
+  .title-wrapper { display: inline-block; position: relative; }
+  h1 {
+    font-family: 'ZCOOL QingKe HuangYou', 'Fredoka', sans-serif;
+    font-size: clamp(36px, 6vw, 56px);
+    background: linear-gradient(135deg, #FF8FB1 0%, #FFB84D 50%, #C8B6FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .subtitle { font-family: 'ZCOOL KuaiLe', sans-serif; color: var(--ink-soft); font-size: 16px; margin-top: 8px; letter-spacing: 3px; }
+  .crown { position: absolute; top: -20px; right: -30px; font-size: 32px; animation: wiggle 2.5s ease-in-out infinite; }
+  @keyframes wiggle { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+  .admin-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #FFD3BA 0%, #FFB6D9 100%);
+    padding: 8px 18px; border-radius: 20px; margin-top: 14px;
+    font-family: 'ZCOOL KuaiLe', sans-serif; color: white; font-size: 15px;
+    box-shadow: 0 6px 18px rgba(255, 143, 177, 0.35); letter-spacing: 1px;
+  }
+  .sync-indicator {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(184, 230, 208, 0.4);
+    padding: 6px 14px; border-radius: 14px; margin-top: 10px; margin-left: 10px;
+    font-family: 'ZCOOL KuaiLe', sans-serif; color: #4A8A6E; font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #6BB89C; animation: pulse 2s ease-in-out infinite; }
+  .sync-dot.error { background: #FF8F8F; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .stat-card {
+    background: var(--card); border-radius: 22px; padding: 18px 16px; text-align: center;
+    box-shadow: 0 8px 24px var(--card-shadow); border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease; position: relative; overflow: hidden;
+  }
+  .stat-card::before { content: ''; position: absolute; inset: 0; background: var(--card-bg, transparent); opacity: 0.5; z-index: 0; }
+  .stat-card:hover { transform: translateY(-4px) scale(1.02); }
+  .stat-card > * { position: relative; z-index: 1; }
+  .stat-icon { font-size: 32px; margin-bottom: 6px; display: block; }
+  .stat-label { font-size: 13px; color: var(--ink-soft); letter-spacing: 1px; margin-bottom: 4px; }
+  .stat-value { font-family: 'ZCOOL QingKe HuangYou', sans-serif; font-size: 28px; color: var(--ink); }
+  .tabs {
+    display: flex; gap: 8px; background: rgba(255, 255, 255, 0.6);
+    padding: 6px; border-radius: 20px; margin-bottom: 24px;
+    backdrop-filter: blur(8px); box-shadow: 0 4px 14px rgba(255, 143, 177, 0.12); overflow-x: auto;
+  }
+  .tab {
+    flex: 1; min-width: 100px; padding: 12px 16px; border-radius: 16px;
+    text-align: center; cursor: pointer; font-family: 'ZCOOL KuaiLe', sans-serif;
+    color: var(--ink-soft); font-size: 15px; letter-spacing: 1px;
+    transition: all 0.3s ease; white-space: nowrap; border: none; background: transparent;
+  }
+  .tab.active {
+    background: linear-gradient(135deg, #FF8FB1 0%, #C8B6FF 100%);
+    color: white; box-shadow: 0 4px 14px rgba(255, 143, 177, 0.4); transform: scale(1.02);
+  }
+  .tab:not(.active):hover { background: rgba(255, 182, 217, 0.25); color: var(--ink); }
+  .panel { display: none; animation: fadeIn 0.4s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .user-card {
+    background: var(--card); border-radius: 22px; padding: 18px;
+    box-shadow: 0 8px 22px var(--card-shadow); border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease; position: relative; overflow: hidden;
+  }
+  .user-card::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--accent, var(--pink)); opacity: 0.2; transition: all 0.4s ease;
+  }
+  .user-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px var(--card-shadow); }
+  .user-card:hover::before { transform: scale(1.5); opacity: 0.3; }
+  .user-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; position: relative; z-index: 1; }
+  .user-avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--accent, linear-gradient(135deg, var(--pink), var(--lavender)));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'ZCOOL QingKe HuangYou', sans-serif; color: white; font-size: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); flex-shrink: 0;
+  }
+  .user-name { font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 18px; color: var(--ink); letter-spacing: 1px; }
+  .user-balance {
+    display: flex; align-items: baseline; gap: 6px;
+    padding: 12px 14px; background: linear-gradient(135deg, #FFF8F0 0%, #FFEEDC 100%);
+    border-radius: 14px; margin-bottom: 12px; position: relative; z-index: 1;
+  }
+  .balance-label { font-size: 12px; color: var(--ink-soft); letter-spacing: 1px; }
+  .balance-num { font-family: 'ZCOOL QingKe HuangYou', sans-serif; font-size: 32px; color: var(--egg-yolk); margin-left: auto; }
+  .balance-unit { font-size: 13px; color: var(--ink-soft); }
+  .user-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; position: relative; z-index: 1; }
+  .mini-stat { background: rgba(255, 255, 255, 0.6); padding: 8px 10px; border-radius: 12px; text-align: center; }
+  .mini-stat-label { font-size: 11px; color: var(--ink-soft); display: block; margin-bottom: 2px; }
+  .mini-stat-value { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px; color: var(--ink); }
+  .user-actions { display: flex; gap: 8px; position: relative; z-index: 1; }
+  .btn {
+    flex: 1; padding: 10px 12px; border: none; border-radius: 14px;
+    font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 14px; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s ease; color: white;
+  }
+  .btn-recharge { background: linear-gradient(135deg, #FFB84D 0%, #FF8FB1 100%); }
+  .btn-claim { background: linear-gradient(135deg, #B8E6D0 0%, #B8E0F6 100%); color: var(--ink); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255, 143, 177, 0.3); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.6; cursor: wait; }
+  .history-list { background: var(--card); border-radius: 22px; padding: 12px; box-shadow: 0 8px 22px var(--card-shadow); border: 2px solid rgba(255, 255, 255, 0.8); }
+  .history-item { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 14px; transition: background 0.2s; }
+  .history-item:hover { background: rgba(255, 182, 217, 0.1); }
+  .history-item + .history-item { border-top: 1px dashed rgba(181, 168, 200, 0.25); }
+  .history-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .history-icon.recharge { background: linear-gradient(135deg, #FFE5B4, #FFD3BA); }
+  .history-icon.claim { background: linear-gradient(135deg, #B8E6D0, #B8E0F6); }
+  .history-info { flex: 1; min-width: 0; }
+  .history-name { font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 16px; color: var(--ink); }
+  .history-time { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+  .history-amount { font-family: 'ZCOOL QingKe HuangYou', sans-serif; font-size: 22px; }
+  .history-amount.plus { color: #FF8FB1; }
+  .history-amount.minus { color: #6BB89C; }
+  .history-delete {
+    background: none; border: none; color: var(--ink-light); cursor: pointer;
+    font-size: 18px; padding: 4px 8px; border-radius: 8px; transition: all 0.2s; flex-shrink: 0;
+  }
+  .history-delete:hover { background: rgba(255, 138, 138, 0.15); color: #FF6B6B; }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--ink-soft); }
+  .empty-state .emoji { font-size: 60px; display: block; margin-bottom: 16px; }
+  .empty-state .text { font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 18px; letter-spacing: 2px; }
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(91, 74, 110, 0.4);
+    backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
+  }
+  .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+  .modal {
+    background: var(--card); border-radius: 28px; padding: 28px;
+    max-width: 400px; width: 100%; box-shadow: 0 20px 60px rgba(91, 74, 110, 0.25);
+    border: 3px solid white; animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-title { font-family: 'ZCOOL QingKe HuangYou', sans-serif; font-size: 24px; color: var(--ink); margin-bottom: 20px; text-align: center; letter-spacing: 1px; }
+  .modal-user-info {
+    display: flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #FFF8F0, #FFEEDC);
+    padding: 14px; border-radius: 16px; margin-bottom: 20px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 14px; color: var(--ink-soft); margin-bottom: 6px; display: block; letter-spacing: 1px; }
+  .form-input {
+    width: 100%; padding: 14px 16px; border: 2px solid rgba(255, 182, 217, 0.3);
+    border-radius: 14px; font-family: 'Fredoka', sans-serif; font-size: 18px;
+    background: #FFFEFB; color: var(--ink); outline: none; transition: all 0.2s;
+  }
+  .form-input:focus { border-color: #FF8FB1; box-shadow: 0 0 0 4px rgba(255, 143, 177, 0.15); }
+  .form-hint { font-size: 12px; color: var(--ink-light); margin-top: 6px; font-family: 'ZCOOL KuaiLe', sans-serif; letter-spacing: 1px; }
+  .form-hint.highlight { color: var(--egg-yolk); font-size: 14px; font-weight: 600; }
+  .quick-amounts { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .quick-btn {
+    padding: 8px 14px; background: rgba(255, 182, 217, 0.2);
+    border: 2px solid rgba(255, 182, 217, 0.3); border-radius: 12px;
+    color: var(--ink); cursor: pointer; font-family: 'ZCOOL KuaiLe', sans-serif;
+    font-size: 13px; transition: all 0.2s;
+  }
+  .quick-btn:hover { background: rgba(255, 143, 177, 0.3); border-color: #FF8FB1; transform: translateY(-2px); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+  .btn-cancel {
+    flex: 1; padding: 14px; border: 2px solid rgba(181, 168, 200, 0.3);
+    background: white; border-radius: 14px; font-family: 'ZCOOL KuaiLe', sans-serif;
+    color: var(--ink-soft); font-size: 15px; cursor: pointer; transition: all 0.2s; letter-spacing: 1px;
+  }
+  .btn-cancel:hover { background: #f8f4f9; }
+  .btn-confirm {
+    flex: 1; padding: 14px; border: none;
+    background: linear-gradient(135deg, #FF8FB1 0%, #C8B6FF 100%);
+    border-radius: 14px; font-family: 'ZCOOL KuaiLe', sans-serif; color: white;
+    font-size: 15px; cursor: pointer; transition: all 0.2s; letter-spacing: 1px;
+    box-shadow: 0 4px 14px rgba(255, 143, 177, 0.4);
+  }
+  .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 143, 177, 0.5); }
+  .btn-confirm:disabled { opacity: 0.5; cursor: wait; transform: none; }
+  .toast {
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(135deg, #FF8FB1, #C8B6FF); color: white;
+    padding: 14px 28px; border-radius: 50px; font-family: 'ZCOOL KuaiLe', sans-serif;
+    font-size: 16px; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(255, 143, 177, 0.4);
+    z-index: 1000; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0;
+    max-width: 90vw; text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.error { background: linear-gradient(135deg, #FF8F8F, #FFB6D9); }
+  .date-group { margin-bottom: 24px; }
+  .date-header {
+    font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 14px; color: var(--ink-soft);
+    margin: 14px 8px 8px; letter-spacing: 2px; display: flex; align-items: center; gap: 8px;
+  }
+  .date-header::before { content: ''; width: 6px; height: 6px; background: linear-gradient(135deg, #FF8FB1, #C8B6FF); border-radius: 50%; }
+  .footer { text-align: center; margin-top: 40px; color: var(--ink-light); font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 13px; letter-spacing: 2px; }
+  .add-user-card {
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px dashed rgba(255, 143, 177, 0.4);
+    border-radius: 22px; padding: 30px 18px; text-align: center;
+    cursor: pointer; transition: all 0.3s;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 200px;
+  }
+  .add-user-card:hover { background: rgba(255, 182, 217, 0.15); border-color: #FF8FB1; transform: translateY(-4px); }
+  .add-icon { font-size: 40px; margin-bottom: 10px; opacity: 0.6; }
+  .add-text { font-family: 'ZCOOL KuaiLe', sans-serif; color: var(--ink-soft); letter-spacing: 2px; }
+
+  /* 加载动画 */
+  .loading-screen {
+    position: fixed; inset: 0; background: linear-gradient(135deg, #FFE5EC 0%, #E5F4FF 100%);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+    transition: opacity 0.5s ease;
+  }
+  .loading-screen.hidden { opacity: 0; pointer-events: none; }
+  .loading-egg { font-size: 60px; animation: bounce 1s ease-in-out infinite; }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+  .loading-text { font-family: 'ZCOOL KuaiLe', sans-serif; color: var(--ink-soft); margin-top: 20px; letter-spacing: 3px; font-size: 16px; }
+
+  @media (max-width: 600px) {
+    .container { padding: 18px 14px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .users-grid { grid-template-columns: 1fr; }
+    .crown { right: 0; top: -16px; font-size: 26px; }
+    h1 { font-size: 32px; }
+    .tab { font-size: 13px; padding: 10px 8px; }
+    .sync-indicator { display: block; margin-left: 0; margin-top: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+  <div style="text-align: center;">
+    <div class="loading-egg">🥚</div>
+    <div class="loading-text">正在连接云端...</div>
+  </div>
+</div>
+
+<div class="floating-eggs">
+  <span>🥚</span><span>🌸</span><span>🥚</span><span>⭐</span>
+  <span>🥚</span><span>🌟</span><span>🥚</span>
+</div>
+
+<div class="container">
+
+  <header>
+    <div class="title-wrapper">
+      <span class="crown">👑</span>
+      <h1>🥚 零鸡蛋小窝 🥚</h1>
+      <div class="subtitle">琉 Q 的鸡蛋分配小铺</div>
+    </div>
+    <div>
+      <div class="admin-badge">
+        <span>✨</span><span>管理员：琉Q</span><span>✨</span>
+      </div>
+      <div class="sync-indicator" id="syncIndicator">
+        <span class="sync-dot" id="syncDot"></span>
+        <span id="syncText">云端已同步</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="stats-row">
+    <div class="stat-card" style="--card-bg: linear-gradient(135deg, #FFE5B4, transparent);">
+      <span class="stat-icon">👥</span>
+      <div class="stat-label">小伙伴总数</div>
+      <div class="stat-value" id="statUsers">0</div>
+    </div>
+    <div class="stat-card" style="--card-bg: linear-gradient(135deg, #FFD3BA, transparent);">
+      <span class="stat-icon">🥚</span>
+      <div class="stat-label">剩余鸡蛋</div>
+      <div class="stat-value" id="statBalance">0</div>
+    </div>
+    <div class="stat-card" style="--card-bg: linear-gradient(135deg, #FFB6D9, transparent);">
+      <span class="stat-icon">💰</span>
+      <div class="stat-label">累计充值</div>
+      <div class="stat-value" id="statRecharge">0</div>
+    </div>
+    <div class="stat-card" style="--card-bg: linear-gradient(135deg, #B8E6D0, transparent);">
+      <span class="stat-icon">🍳</span>
+      <div class="stat-label">累计领取</div>
+      <div class="stat-value" id="statClaim">0</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="users">👥 小伙伴</button>
+    <button class="tab" data-tab="history">📋 历史记录</button>
+    <button class="tab" data-tab="today">⭐ 今日登记</button>
+  </div>
+
+  <div class="panel active" id="panel-users">
+    <div class="users-grid" id="usersGrid"></div>
+  </div>
+
+  <div class="panel" id="panel-history">
+    <div id="historyContent"></div>
+  </div>
+
+  <div class="panel" id="panel-today">
+    <div id="todayContent"></div>
+  </div>
+
+  <div class="footer">
+    🌸 数据保存在 Cloudflare 云端 · 所有人实时同步 🌸
+  </div>
+</div>
+
+<!-- 充值弹窗 -->
+<div class="modal-overlay" id="rechargeModal">
+  <div class="modal">
+    <div class="modal-title">💰 给小伙伴充值</div>
+    <div class="modal-user-info">
+      <div class="user-avatar" id="rechargeAvatar"></div>
+      <div>
+        <div style="font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 18px;" id="rechargeName"></div>
+        <div style="font-size: 13px; color: var(--ink-soft);">当前余额：<span id="rechargeBalance"></span> 个鸡蛋</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">💵 充值金额（元）</label>
+      <input type="number" class="form-input" id="rechargeMoney" placeholder="输入金额..." min="0" step="0.5">
+      <div class="quick-amounts">
+        <button class="quick-btn" data-money="2">¥2</button>
+        <button class="quick-btn" data-money="4">¥4</button>
+        <button class="quick-btn" data-money="6">¥6</button>
+        <button class="quick-btn" data-money="10">¥10</button>
+        <button class="quick-btn" data-money="20">¥20</button>
+      </div>
+      <div class="form-hint highlight" id="eggCount">🥚 可换 0 个鸡蛋（2元 = 3个）</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" data-close="rechargeModal">取消</button>
+      <button class="btn-confirm" id="confirmRechargeBtn">确认充值 ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- 领取弹窗 -->
+<div class="modal-overlay" id="claimModal">
+  <div class="modal">
+    <div class="modal-title">🍳 登记领取鸡蛋</div>
+    <div class="modal-user-info">
+      <div class="user-avatar" id="claimAvatar"></div>
+      <div>
+        <div style="font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 18px;" id="claimName"></div>
+        <div style="font-size: 13px; color: var(--ink-soft);">可领余额：<span id="claimBalance"></span> 个鸡蛋</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">🥚 领取数量</label>
+      <input type="number" class="form-input" id="claimAmount" placeholder="输入数量..." min="1" step="1">
+      <div class="quick-amounts">
+        <button class="quick-btn" data-claim="1">1 个</button>
+        <button class="quick-btn" data-claim="2">2 个</button>
+        <button class="quick-btn" data-claim="3">3 个</button>
+        <button class="quick-btn" data-claim="5">5 个</button>
+        <button class="quick-btn" data-claim="all">全部</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" data-close="claimModal">取消</button>
+      <button class="btn-confirm" id="confirmClaimBtn">确认领取 ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- 添加用户弹窗 -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <div class="modal-title">✨ 添加新小伙伴</div>
+    <div class="form-group">
+      <label class="form-label">👤 小伙伴名字</label>
+      <input type="text" class="form-input" id="newUserName" placeholder="输入名字..." maxlength="20">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" data-close="addUserModal">取消</button>
+      <button class="btn-confirm" id="confirmAddUserBtn">添加 ✨</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============ 全局状态 ============
+  const RATE = 1.5;
+  const COLOR_PALETTE = [
+    'linear-gradient(135deg, #FFB6D9, #FF8FB1)',
+    'linear-gradient(135deg, #FFD3BA, #FFA89F)',
+    'linear-gradient(135deg, #C8B6FF, #B8B0F6)',
+    'linear-gradient(135deg, #B8E6D0, #95D5B2)',
+    'linear-gradient(135deg, #B8E0F6, #A2D5F2)',
+    'linear-gradient(135deg, #FFE5B4, #FFD580)',
+    'linear-gradient(135deg, #FFC8DD, #FFAFCC)',
+    'linear-gradient(135deg, #CDB4DB, #B5A0D0)',
+    'linear-gradient(135deg, #A0C4FF, #BDB2FF)',
+    'linear-gradient(135deg, #FFCFD2, #F1C0E8)',
+    'linear-gradient(135deg, #FBF8CC, #FDE4CF)',
+    'linear-gradient(135deg, #98F5E1, #B9FBC0)',
+  ];
+
+  let data = { users: [], history: [] };
+  let currentUserId = null;
+  let busy = false;
+
+  // ============ 工具函数 ============
+  function $(id) { return document.getElementById(id); }
+
+  function showToast(msg, isError, duration) {
+    const toast = $('toast');
+    toast.textContent = msg;
+    toast.classList.remove('error');
+    if (isError) toast.classList.add('error');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, duration || 2000);
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+
+  function getInitial(name) {
+    return name.charAt(0);
+  }
+
+  function formatDate(ts) {
+    const d = new Date(ts);
+    const now = new Date();
+    const today = now.toDateString();
+    const yest = new Date(now - 86400000).toDateString();
+    const target = d.toDateString();
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    if (target === today) return '今天 ' + hh + ':' + mm;
+    if (target === yest) return '昨天 ' + hh + ':' + mm;
+    return (d.getMonth()+1) + '月' + d.getDate() + '日 ' + hh + ':' + mm;
+  }
+
+  function formatDateGroup(ts) {
+    const d = new Date(ts);
+    const now = new Date();
+    const today = now.toDateString();
+    const yest = new Date(now - 86400000).toDateString();
+    const target = d.toDateString();
+    if (target === today) return '⭐ 今天';
+    if (target === yest) return '🌙 昨天';
+    return '📅 ' + (d.getMonth()+1) + ' 月 ' + d.getDate() + ' 日';
+  }
+
+  function setSyncStatus(state, text) {
+    const dot = $('syncDot');
+    const txt = $('syncText');
+    dot.classList.toggle('error', state === 'error');
+    txt.textContent = text;
+  }
+
+  // ============ API 调用 ============
+  async function apiCall(url, options) {
+    options = options || {};
+    options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+    if (options.body && typeof options.body !== 'string') {
+      options.body = JSON.stringify(options.body);
+    }
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      let errMsg = '网络错误 (' + res.status + ')';
+      try {
+        const body = await res.json();
+        if (body && body.error) errMsg = body.error;
+      } catch(e) {}
+      throw new Error(errMsg);
+    }
+    return await res.json();
+  }
+
+  async function loadData() {
+    try {
+      setSyncStatus('ok', '正在加载...');
+      const res = await apiCall('/api/data');
+      if (res.ok) {
+        data = res.data;
+        render();
+        setSyncStatus('ok', '云端已同步');
+        $('loadingScreen').classList.add('hidden');
+        return true;
+      } else {
+        throw new Error(res.error || '加载失败');
+      }
+    } catch (err) {
+      setSyncStatus('error', '连接失败');
+      $('loadingScreen').classList.add('hidden');
+      showToast('💔 加载失败：' + err.message, true, 3000);
+      return false;
+    }
+  }
+
+  // ============ 渲染 ============
+  function render() {
+    renderStats();
+    renderUsers();
+    renderHistory();
+    renderToday();
+  }
+
+  function renderStats() {
+    $('statUsers').textContent = data.users.length;
+    $('statBalance').textContent = data.users.reduce(function(s, u) { return s + u.balance; }, 0);
+    $('statRecharge').textContent = data.users.reduce(function(s, u) { return s + u.totalRecharge; }, 0);
+    $('statClaim').textContent = data.users.reduce(function(s, u) { return s + u.totalClaim; }, 0);
+  }
+
+  function renderUsers() {
+    const grid = $('usersGrid');
+    grid.innerHTML = '';
+
+    data.users.forEach(function(user) {
+      const color = COLOR_PALETTE[user.colorIdx % COLOR_PALETTE.length];
+      const card = document.createElement('div');
+      card.className = 'user-card';
+      card.style.setProperty('--accent', color);
+      card.innerHTML =
+        '<div class="user-header">' +
+          '<div class="user-avatar" style="background: ' + color + ';">' + escapeHtml(getInitial(user.name)) + '</div>' +
+          '<div class="user-name">' + escapeHtml(user.name) + '</div>' +
+        '</div>' +
+        '<div class="user-balance">' +
+          '<span class="balance-label">🥚 当前余额</span>' +
+          '<span class="balance-num">' + user.balance + '</span>' +
+          '<span class="balance-unit">个</span>' +
+        '</div>' +
+        '<div class="user-stats">' +
+          '<div class="mini-stat"><span class="mini-stat-label">累计充值</span><span class="mini-stat-value">' + user.totalRecharge + '</span></div>' +
+          '<div class="mini-stat"><span class="mini-stat-label">累计领取</span><span class="mini-stat-value">' + user.totalClaim + '</span></div>' +
+        '</div>' +
+        '<div class="user-actions">' +
+          '<button class="btn btn-recharge" data-action="recharge" data-uid="' + user.id + '">💰 充值</button>' +
+          '<button class="btn btn-claim" data-action="claim" data-uid="' + user.id + '">🍳 领取</button>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+
+    const addCard = document.createElement('div');
+    addCard.className = 'add-user-card';
+    addCard.dataset.action = 'add-user';
+    addCard.innerHTML = '<div class="add-icon">➕</div><div class="add-text">添加小伙伴</div>';
+    grid.appendChild(addCard);
+  }
+
+  function renderHistory() {
+    const container = $('historyContent');
+    if (!data.history || data.history.length === 0) {
+      container.innerHTML =
+        '<div class="empty-state">' +
+        '<span class="emoji">🌸</span>' +
+        '<div class="text">还没有记录哦~</div>' +
+        '<div class="text" style="font-size: 14px; margin-top: 8px;">快去给小伙伴充值或登记吧</div>' +
+        '</div>';
+      return;
+    }
+
+    const groups = {};
+    data.history.forEach(function(h) {
+      const key = new Date(h.time).toDateString();
+      if (!groups[key]) groups[key] = { time: h.time, items: [] };
+      groups[key].items.push(h);
+    });
+
+    const sortedKeys = Object.keys(groups).sort(function(a, b) {
+      return groups[b].time - groups[a].time;
+    });
+
+    let html = '';
+    sortedKeys.forEach(function(key) {
+      html += '<div class="date-group"><div class="date-header">' + formatDateGroup(groups[key].time) + '</div><div class="history-list">';
+      groups[key].items.forEach(function(h) {
+        const isRecharge = h.type === 'recharge';
+        html +=
+          '<div class="history-item">' +
+            '<div class="history-icon ' + (isRecharge ? 'recharge' : 'claim') + '">' + (isRecharge ? '💰' : '🍳') + '</div>' +
+            '<div class="history-info">' +
+              '<div class="history-name">' + escapeHtml(h.userName) + ' · ' + (isRecharge ? '充值' : '领取') + '</div>' +
+              '<div class="history-time">' + formatDate(h.time) + (h.money ? ' · ¥' + h.money : '') + '</div>' +
+            '</div>' +
+            '<div class="history-amount ' + (isRecharge ? 'plus' : 'minus') + '">' +
+              (isRecharge ? '+' : '-') + h.amount + ' 🥚' +
+            '</div>' +
+            '<button class="history-delete" data-action="delete-history" data-hid="' + h.id + '" title="删除">×</button>' +
+          '</div>';
+      });
+      html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderToday() {
+    const container = $('todayContent');
+    const todayStr = new Date().toDateString();
+    const todayItems = (data.history || []).filter(function(h) {
+      return new Date(h.time).toDateString() === todayStr;
+    });
+
+    if (todayItems.length === 0) {
+      container.innerHTML =
+        '<div class="empty-state">' +
+        '<span class="emoji">⭐</span>' +
+        '<div class="text">今天还没有登记哦~</div>' +
+        '<div class="text" style="font-size: 14px; margin-top: 8px;">等待小伙伴们来领鸡蛋</div>' +
+        '</div>';
+      return;
+    }
+
+    const userClaim = {};
+    todayItems.forEach(function(h) {
+      if (h.type === 'claim') {
+        if (!userClaim[h.userId]) {
+          userClaim[h.userId] = { name: h.userName, count: 0, items: [] };
+        }
+        userClaim[h.userId].count += h.amount;
+        userClaim[h.userId].items.push(h);
+      }
+    });
+
+    const recharges = todayItems.filter(function(h) { return h.type === 'recharge'; });
+    const totalClaimed = Object.values(userClaim).reduce(function(s, u) { return s + u.count; }, 0);
+
+    let html =
+      '<div style="background: linear-gradient(135deg, #FFE5EC, #E5F4FF); padding: 20px; border-radius: 22px; margin-bottom: 20px; text-align: center;">' +
+        '<div style="font-family: \'ZCOOL QingKe HuangYou\', sans-serif; font-size: 28px; color: var(--ink); letter-spacing: 2px;">⭐ 今日小结 ⭐</div>' +
+        '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px;">' +
+          '<div style="background: white; padding: 14px; border-radius: 16px;">' +
+            '<div style="font-size: 13px; color: var(--ink-soft);">领取人次</div>' +
+            '<div style="font-family: \'ZCOOL QingKe HuangYou\', sans-serif; font-size: 32px; color: #FF8FB1;">' + Object.keys(userClaim).length + '</div>' +
+          '</div>' +
+          '<div style="background: white; padding: 14px; border-radius: 16px;">' +
+            '<div style="font-size: 13px; color: var(--ink-soft);">领取鸡蛋</div>' +
+            '<div style="font-family: \'ZCOOL QingKe HuangYou\', sans-serif; font-size: 32px; color: #FFB84D;">' + totalClaimed + ' 🥚</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    if (Object.keys(userClaim).length > 0) {
+      html += '<div class="date-header">🍳 今日领取登记</div><div class="history-list">';
+      Object.entries(userClaim).forEach(function(entry) {
+        const uid = entry[0];
+        const info = entry[1];
+        const user = data.users.find(function(u) { return u.id === uid; });
+        const color = user ? COLOR_PALETTE[user.colorIdx % COLOR_PALETTE.length] : COLOR_PALETTE[0];
+        html +=
+          '<div class="history-item">' +
+            '<div class="user-avatar" style="background: ' + color + '; width: 40px; height: 40px; font-size: 18px;">' + escapeHtml(getInitial(info.name)) + '</div>' +
+            '<div class="history-info">' +
+              '<div class="history-name">' + escapeHtml(info.name) + '</div>' +
+              '<div class="history-time">今日累计领取 ' + info.items.length + ' 次</div>' +
+            '</div>' +
+            '<div class="history-amount minus">' + info.count + ' 🥚</div>' +
+          '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (recharges.length > 0) {
+      html += '<div class="date-header" style="margin-top: 20px;">💰 今日充值记录</div><div class="history-list">';
+      recharges.forEach(function(h) {
+        html +=
+          '<div class="history-item">' +
+            '<div class="history-icon recharge">💰</div>' +
+            '<div class="history-info">' +
+              '<div class="history-name">' + escapeHtml(h.userName) + '</div>' +
+              '<div class="history-time">' + formatDate(h.time) + ' · ¥' + h.money + '</div>' +
+            '</div>' +
+            '<div class="history-amount plus">+' + h.amount + ' 🥚</div>' +
+          '</div>';
+      });
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
+  }
+
+  // ============ 弹窗 ============
+  function openRecharge(userId) {
+    const user = data.users.find(function(u) { return u.id === userId; });
+    if (!user) return;
+    currentUserId = userId;
+    const color = COLOR_PALETTE[user.colorIdx % COLOR_PALETTE.length];
+    $('rechargeName').textContent = user.name;
+    $('rechargeBalance').textContent = user.balance;
+    $('rechargeAvatar').textContent = getInitial(user.name);
+    $('rechargeAvatar').style.background = color;
+    $('rechargeMoney').value = '';
+    $('eggCount').textContent = '🥚 可换 0 个鸡蛋（2元 = 3个）';
+    $('rechargeModal').classList.add('active');
+    setTimeout(function() { $('rechargeMoney').focus(); }, 100);
+  }
+
+  function openClaim(userId) {
+    const user = data.users.find(function(u) { return u.id === userId; });
+    if (!user) return;
+    if (user.balance <= 0) {
+      showToast('💔 ' + user.name + ' 没有余额啦，先充值吧~');
+      return;
+    }
+    currentUserId = userId;
+    const color = COLOR_PALETTE[user.colorIdx % COLOR_PALETTE.length];
+    $('claimName').textContent = user.name;
+    $('claimBalance').textContent = user.balance;
+    $('claimAvatar').textContent = getInitial(user.name);
+    $('claimAvatar').style.background = color;
+    $('claimAmount').value = '';
+    $('claimModal').classList.add('active');
+    setTimeout(function() { $('claimAmount').focus(); }, 100);
+  }
+
+  function openAddUser() {
+    $('newUserName').value = '';
+    $('addUserModal').classList.add('active');
+    setTimeout(function() { $('newUserName').focus(); }, 100);
+  }
+
+  function closeModal(id) {
+    $(id).classList.remove('active');
+  }
+
+  function updateEggCount() {
+    const money = parseFloat($('rechargeMoney').value) || 0;
+    const eggs = Math.floor(money * RATE);
+    $('eggCount').textContent = '🥚 可换 ' + eggs + ' 个鸡蛋（2元 = 3个）';
+  }
+
+  // ============ 操作（带云端同步）============
+  async function confirmRecharge() {
+    if (busy) return;
+    const money = parseFloat($('rechargeMoney').value);
+    if (!money || money <= 0) { showToast('💔 请输入正确的金额'); return; }
+    const eggs = Math.floor(money * RATE);
+    if (eggs <= 0) { showToast('💔 金额太少啦，至少要能换 1 个鸡蛋'); return; }
+
+    busy = true;
+    const btn = $('confirmRechargeBtn');
+    btn.disabled = true;
+    btn.textContent = '同步中...';
+    setSyncStatus('ok', '同步中...');
+
+    try {
+      const res = await apiCall('/api/recharge', {
+        method: 'POST',
+        body: { userId: currentUserId, money: money }
+      });
+      if (res.ok) {
+        data = res.data;
+        render();
+        closeModal('rechargeModal');
+        showToast('✨ ' + res.userName + ' 充值 ' + res.eggs + ' 个鸡蛋成功！');
+        setSyncStatus('ok', '云端已同步');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      showToast('💔 ' + err.message, true);
+      setSyncStatus('error', '同步失败');
+    } finally {
+      busy = false;
+      btn.disabled = false;
+      btn.textContent = '确认充值 ✨';
+    }
+  }
+
+  async function confirmClaim() {
+    if (busy) return;
+    const amount = parseInt($('claimAmount').value);
+    if (!amount || amount <= 0) { showToast('💔 请输入正确的数量'); return; }
+
+    busy = true;
+    const btn = $('confirmClaimBtn');
+    btn.disabled = true;
+    btn.textContent = '同步中...';
+    setSyncStatus('ok', '同步中...');
+
+    try {
+      const res = await apiCall('/api/claim', {
+        method: 'POST',
+        body: { userId: currentUserId, amount: amount }
+      });
+      if (res.ok) {
+        data = res.data;
+        render();
+        closeModal('claimModal');
+        showToast('🍳 ' + res.userName + ' 领取 ' + amount + ' 个鸡蛋啦！');
+        setSyncStatus('ok', '云端已同步');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      showToast('💔 ' + err.message, true);
+      setSyncStatus('error', '同步失败');
+    } finally {
+      busy = false;
+      btn.disabled = false;
+      btn.textContent = '确认领取 ✨';
+    }
+  }
+
+  async function confirmAddUser() {
+    if (busy) return;
+    const name = $('newUserName').value.trim();
+    if (!name) { showToast('💔 请输入名字'); return; }
+
+    busy = true;
+    const btn = $('confirmAddUserBtn');
+    btn.disabled = true;
+    btn.textContent = '同步中...';
+    setSyncStatus('ok', '同步中...');
+
+    try {
+      const res = await apiCall('/api/user', {
+        method: 'POST',
+        body: { name: name }
+      });
+      if (res.ok) {
+        data = res.data;
+        render();
+        closeModal('addUserModal');
+        showToast('✨ 欢迎 ' + name + ' 加入！');
+        setSyncStatus('ok', '云端已同步');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      showToast('💔 ' + err.message, true);
+      setSyncStatus('error', '同步失败');
+    } finally {
+      busy = false;
+      btn.disabled = false;
+      btn.textContent = '添加 ✨';
+    }
+  }
+
+  async function deleteHistoryItem(historyId) {
+    if (busy) return;
+    if (!confirm('确定要删除这条记录吗？余额会同步调整哦~')) return;
+
+    busy = true;
+    setSyncStatus('ok', '同步中...');
+
+    try {
+      const res = await apiCall('/api/delete-history', {
+        method: 'POST',
+        body: { historyId: historyId }
+      });
+      if (res.ok) {
+        data = res.data;
+        render();
+        showToast('🗑️ 记录已删除');
+        setSyncStatus('ok', '云端已同步');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      showToast('💔 ' + err.message, true);
+      setSyncStatus('error', '同步失败');
+    } finally {
+      busy = false;
+    }
+  }
+
+  // ============ 事件绑定 ============
+  // Tab 切换
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      $('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // 用户卡片操作（事件委托）
+  $('usersGrid').addEventListener('click', function(e) {
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
+    const action = target.dataset.action;
+    const uid = target.dataset.uid;
+    if (action === 'recharge') openRecharge(uid);
+    else if (action === 'claim') openClaim(uid);
+    else if (action === 'add-user') openAddUser();
+  });
+
+  // 历史记录删除
+  $('historyContent').addEventListener('click', function(e) {
+    const target = e.target.closest('[data-action="delete-history"]');
+    if (!target) return;
+    deleteHistoryItem(target.dataset.hid);
+  });
+
+  // 快捷金额
+  document.querySelectorAll('[data-money]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      $('rechargeMoney').value = btn.dataset.money;
+      updateEggCount();
+    });
+  });
+
+  // 快捷领取
+  document.querySelectorAll('[data-claim]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const v = btn.dataset.claim;
+      const user = data.users.find(function(u) { return u.id === currentUserId; });
+      if (!user) return;
+      if (v === 'all') {
+        $('claimAmount').value = user.balance;
+      } else {
+        $('claimAmount').value = Math.min(parseInt(v), user.balance);
+      }
+    });
+  });
+
+  // 关闭弹窗
+  document.querySelectorAll('[data-close]').forEach(function(btn) {
+    btn.addEventListener('click', function() { closeModal(btn.dataset.close); });
+  });
+
+  // 充值金额输入
+  $('rechargeMoney').addEventListener('input', updateEggCount);
+
+  // 确认按钮
+  $('confirmRechargeBtn').addEventListener('click', confirmRecharge);
+  $('confirmClaimBtn').addEventListener('click', confirmClaim);
+  $('confirmAddUserBtn').addEventListener('click', confirmAddUser);
+
+  // 回车提交
+  $('rechargeMoney').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmRecharge(); });
+  $('claimAmount').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmClaim(); });
+  $('newUserName').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmAddUser(); });
+
+  // 点击遮罩关闭
+  document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.classList.remove('active');
+    });
+  });
+
+  // 定时刷新（每 30 秒拉一次云端数据）
+  setInterval(function() {
+    if (!busy && document.visibilityState === 'visible') {
+      apiCall('/api/data').then(function(res) {
+        if (res.ok && res.data.updatedAt !== data.updatedAt) {
+          data = res.data;
+          render();
+        }
+      }).catch(function() {});
+    }
+  }, 30000);
+
+  // 页面重新可见时刷新
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible' && !busy) {
+      loadData();
+    }
+  });
+
+  // 启动
+  loadData();
+})();
+</script>
+
+</body>
+</html>
