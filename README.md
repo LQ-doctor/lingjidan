@@ -1,3 +1,4 @@
+
 # 🥚 零鸡蛋小窝
 
 琉Q 的可爱风鸡蛋分配管理网站，部署在 Cloudflare Pages，数据存在 Cloudflare KV，所有人实时同步。
