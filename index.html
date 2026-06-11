@@ -285,6 +285,95 @@
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
   .loading-text { font-family: 'ZCOOL KuaiLe', sans-serif; color: var(--ink-soft); margin-top: 20px; letter-spacing: 3px; font-size: 16px; }
 
+  /* ===== 新增：管理员 / 拖动排序 / 待确认 ===== */
+  .header-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px; }
+  .admin-badge.guest {
+    background: linear-gradient(135deg, #D8D0E8 0%, #C7BCDE 100%);
+    box-shadow: 0 6px 18px rgba(150, 140, 175, 0.3);
+  }
+  .admin-toggle-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.8); border: 2px solid rgba(255,143,177,0.4);
+    color: var(--ink-soft); padding: 8px 18px; border-radius: 18px;
+    font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 13px; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s; margin-top: 12px;
+  }
+  .admin-toggle-btn:hover { border-color: #FF8FB1; color: var(--ink); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,143,177,0.25); }
+  .admin-toggle-btn.is-admin { background: linear-gradient(135deg, #FFD3BA, #FFB6D9); color: white; border-color: transparent; }
+
+  .tab { position: relative; }
+  .tab-badge {
+    display: none; position: absolute; top: 3px; right: 8px;
+    min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+    background: #FF6B9D; color: white; font-family: 'Fredoka', sans-serif;
+    font-size: 11px; font-weight: 600; line-height: 18px; text-align: center;
+    box-shadow: 0 2px 6px rgba(255,107,157,0.5);
+  }
+  .tab-badge.show { display: inline-block; }
+
+  .drag-handle {
+    position: absolute; top: 12px; right: 14px; z-index: 3;
+    width: 30px; height: 30px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.75); color: var(--ink-light);
+    font-size: 16px; cursor: grab; touch-action: none; user-select: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .drag-handle:hover { background: rgba(255,182,217,0.45); color: var(--rose); }
+  .drag-handle:active { cursor: grabbing; }
+  .dragging-card { z-index: 999; box-shadow: 0 18px 40px rgba(255,143,177,0.4) !important; opacity: 0.97; }
+  .drag-placeholder {
+    border: 2px dashed rgba(255,143,177,0.5); border-radius: 22px;
+    background: rgba(255,182,217,0.12); min-height: 180px;
+  }
+
+  /* 待确认卡片 */
+  .pending-card {
+    background: var(--card); border-radius: 22px; padding: 18px;
+    box-shadow: 0 8px 22px var(--card-shadow); border: 2px solid rgba(255, 224, 138, 0.65);
+    margin-bottom: 14px; position: relative; overflow: hidden;
+  }
+  .pending-card::before { content: '⏳'; position: absolute; top: -12px; right: -4px; font-size: 70px; opacity: 0.08; }
+  .pending-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; position: relative; z-index: 1; }
+  .pending-info { flex: 1; min-width: 0; }
+  .pending-name { font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 18px; color: var(--ink); }
+  .pending-meta { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+  .pending-eggs { font-family: 'ZCOOL QingKe HuangYou', sans-serif; font-size: 26px; color: var(--egg-yolk); white-space: nowrap; }
+  .pending-note {
+    background: rgba(255,242,168,0.35); border-radius: 12px; padding: 8px 12px;
+    font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; position: relative; z-index: 1;
+    word-break: break-word;
+  }
+  .pending-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
+  .btn-approve {
+    flex: 1; padding: 11px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, #95D5B2 0%, #6BB89C 100%); color: white;
+    font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 14px; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-reject {
+    flex: 1; padding: 11px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, #FFB6B6 0%, #FF8F8F 100%); color: white;
+    font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 14px; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-approve:hover, .btn-reject:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+  .btn-approve:disabled, .btn-reject:disabled { opacity: 0.6; cursor: wait; }
+  .pending-waiting {
+    text-align: center; padding: 11px; border-radius: 12px;
+    background: rgba(200,182,255,0.2); color: var(--ink-soft);
+    font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 14px; letter-spacing: 1px;
+    position: relative; z-index: 1;
+  }
+
+  .admin-hint-bar {
+    background: rgba(255,255,255,0.6); border-radius: 16px; padding: 10px 16px;
+    margin-bottom: 16px; font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 13px;
+    color: var(--ink-soft); letter-spacing: 1px; text-align: center;
+    border: 1px dashed rgba(255,143,177,0.3);
+  }
+  .rconfig-hint { color: var(--rose); }
+
   @media (max-width: 600px) {
     .container { padding: 18px 14px; }
     .stats-row { grid-template-columns: 1fr 1fr; }
@@ -293,6 +382,7 @@
     h1 { font-size: 32px; }
     .tab { font-size: 13px; padding: 10px 8px; }
     .sync-indicator { display: block; margin-left: 0; margin-top: 10px; }
+    .drag-placeholder { min-height: 200px; }
   }
 </style>
 </head>
@@ -318,14 +408,17 @@
       <h1>🥚 零鸡蛋小窝 🥚</h1>
       <div class="subtitle">琉 Q 的鸡蛋分配小铺</div>
     </div>
-    <div>
-      <div class="admin-badge">
-        <span>✨</span><span>管理员：琉Q</span><span>✨</span>
+    <div class="header-controls">
+      <div class="admin-badge" id="adminBadge">
+        <span>✨</span><span id="adminBadgeText">管理员：琉Q</span><span>✨</span>
       </div>
       <div class="sync-indicator" id="syncIndicator">
         <span class="sync-dot" id="syncDot"></span>
         <span id="syncText">云端已同步</span>
       </div>
+    </div>
+    <div>
+      <button class="admin-toggle-btn" id="adminToggleBtn">🔑 我是琉Q · 登录</button>
     </div>
   </header>
 
@@ -354,12 +447,18 @@
 
   <div class="tabs">
     <button class="tab active" data-tab="users">👥 小伙伴</button>
+    <button class="tab" data-tab="pending">⏳ 待确认<span class="tab-badge" id="pendingBadge">0</span></button>
     <button class="tab" data-tab="history">📋 历史记录</button>
     <button class="tab" data-tab="today">⭐ 今日登记</button>
   </div>
 
   <div class="panel active" id="panel-users">
+    <div class="admin-hint-bar" id="usersHint"></div>
     <div class="users-grid" id="usersGrid"></div>
+  </div>
+
+  <div class="panel" id="panel-pending">
+    <div id="pendingContent"></div>
   </div>
 
   <div class="panel" id="panel-history">
@@ -378,7 +477,7 @@
 <!-- 充值弹窗 -->
 <div class="modal-overlay" id="rechargeModal">
   <div class="modal">
-    <div class="modal-title">💰 给小伙伴充值</div>
+    <div class="modal-title" id="rechargeModalTitle">💰 给小伙伴充值</div>
     <div class="modal-user-info">
       <div class="user-avatar" id="rechargeAvatar"></div>
       <div>
@@ -397,6 +496,13 @@
         <button class="quick-btn" data-money="20">¥20</button>
       </div>
       <div class="form-hint highlight" id="eggCount">🥚 可换 0 个鸡蛋（2元 = 3个）</div>
+    </div>
+    <div class="form-group" id="rechargeNoteGroup" style="display:none;">
+      <label class="form-label">📝 你是谁 / 备注（方便琉Q确认）</label>
+      <input type="text" class="form-input" id="rechargeNote" placeholder="例如：美玲 微信已转" maxlength="30" style="font-size:16px;">
+    </div>
+    <div class="form-hint" id="rechargeModeHint" style="display:none; color: var(--rose); text-align:center; margin-top: 2px;">
+      ⏳ 提交后需要琉Q确认才会到账哦~
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" data-close="rechargeModal">取消</button>
@@ -449,6 +555,22 @@
   </div>
 </div>
 
+<!-- 管理员登录弹窗 -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <div class="modal-title">🔑 琉Q 管理员登录</div>
+    <div class="form-group">
+      <label class="form-label">请输入管理密码</label>
+      <input type="password" class="form-input" id="adminPinInput" placeholder="输入 PIN..." inputmode="numeric" autocomplete="off">
+      <div class="form-hint">只有琉Q（刘琴）知道这个密码。登录后才能直接充值、确认到账、调整顺序、删除记录。</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" data-close="adminModal">取消</button>
+      <button class="btn-confirm" id="confirmAdminBtn">登录 ✨</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -457,6 +579,7 @@
 
   // ============ 全局状态 ============
   const RATE = 1.5;
+  const ADMIN_KEY = 'lingjidan_admin';
   const COLOR_PALETTE = [
     'linear-gradient(135deg, #FFB6D9, #FF8FB1)',
     'linear-gradient(135deg, #FFD3BA, #FFA89F)',
@@ -472,9 +595,12 @@
     'linear-gradient(135deg, #98F5E1, #B9FBC0)',
   ];
 
-  let data = { users: [], history: [] };
+  let data = { users: [], history: [], pending: [] };
   let currentUserId = null;
   let busy = false;
+  let isAdmin = false;
+  let adminPin = '';
+  let isDragging = false;
 
   // ============ 工具函数 ============
   function $(id) { return document.getElementById(id); }
@@ -494,9 +620,7 @@
     return div.innerHTML;
   }
 
-  function getInitial(name) {
-    return name.charAt(0);
-  }
+  function getInitial(name) { return name.charAt(0); }
 
   function formatDate(ts) {
     const d = new Date(ts);
@@ -537,15 +661,14 @@
       options.body = JSON.stringify(options.body);
     }
     const res = await fetch(url, options);
+    let payload = null;
+    try { payload = await res.json(); } catch (e) {}
     if (!res.ok) {
-      let errMsg = '网络错误 (' + res.status + ')';
-      try {
-        const body = await res.json();
-        if (body && body.error) errMsg = body.error;
-      } catch(e) {}
-      throw new Error(errMsg);
+      const err = new Error((payload && payload.error) ? payload.error : ('网络错误 (' + res.status + ')'));
+      err.status = res.status;
+      throw err;
     }
-    return await res.json();
+    return payload;
   }
 
   async function loadData() {
@@ -569,10 +692,105 @@
     }
   }
 
+  // ============ 管理员模式 ============
+  function updateAdminHeader() {
+    const badge = $('adminBadge');
+    const badgeText = $('adminBadgeText');
+    const btn = $('adminToggleBtn');
+    if (isAdmin) {
+      badge.classList.remove('guest');
+      badgeText.textContent = '管理模式：琉Q';
+      btn.textContent = '🚪 退出管理';
+      btn.classList.add('is-admin');
+    } else {
+      badge.classList.add('guest');
+      badgeText.textContent = '访客浏览中';
+      btn.textContent = '🔑 我是琉Q · 登录';
+      btn.classList.remove('is-admin');
+    }
+  }
+
+  function updateAdminUI() {
+    updateAdminHeader();
+    render();
+  }
+
+  function openAdminModal() {
+    $('adminPinInput').value = '';
+    $('adminModal').classList.add('active');
+    setTimeout(function() { $('adminPinInput').focus(); }, 100);
+  }
+
+  async function confirmAdminLogin() {
+    const pin = $('adminPinInput').value.trim();
+    if (!pin) { showToast('💔 请输入密码'); return; }
+    const btn = $('confirmAdminBtn');
+    btn.disabled = true; btn.textContent = '验证中...';
+    try {
+      const res = await apiCall('/api/verify-admin', { method: 'POST', body: { pin: pin } });
+      if (res.ok) {
+        isAdmin = true; adminPin = pin;
+        try { localStorage.setItem(ADMIN_KEY, pin); } catch (e) {}
+        closeModal('adminModal');
+        updateAdminUI();
+        showToast('✨ 欢迎回来，琉Q！已进入管理模式');
+      } else {
+        throw new Error(res.error || 'PIN 错误');
+      }
+    } catch (err) {
+      showToast('💔 ' + (err.status === 403 ? '密码错误，请重试' : err.message), true);
+    } finally {
+      btn.disabled = false; btn.textContent = '登录 ✨';
+    }
+  }
+
+  function adminLogout() {
+    isAdmin = false; adminPin = '';
+    try { localStorage.removeItem(ADMIN_KEY); } catch (e) {}
+    updateAdminUI();
+    showToast('已退出管理模式');
+  }
+
+  function handleAdminError(err) {
+    if (err && err.status === 403) {
+      showToast('🔒 管理身份已失效，请重新登录', true, 2600);
+      isAdmin = false; adminPin = '';
+      try { localStorage.removeItem(ADMIN_KEY); } catch (e) {}
+      updateAdminUI();
+    } else {
+      showToast('💔 ' + (err ? err.message : '操作失败'), true);
+    }
+  }
+
+  async function verifyStoredAdmin() {
+    if (!adminPin) return;
+    try {
+      const res = await apiCall('/api/verify-admin', { method: 'POST', body: { pin: adminPin } });
+      if (!res.ok) throw new Error('invalid');
+    } catch (e) {
+      // 密码已变更或失效，静默退出管理模式
+      isAdmin = false; adminPin = '';
+      try { localStorage.removeItem(ADMIN_KEY); } catch (err) {}
+      updateAdminUI();
+    }
+  }
+
+  // ============ Tab 切换 ============
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(function(t) {
+      t.classList.toggle('active', t.dataset.tab === name);
+    });
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    const panel = $('panel-' + name);
+    if (panel) panel.classList.add('active');
+  }
+
   // ============ 渲染 ============
   function render() {
     renderStats();
+    renderUsersHint();
     renderUsers();
+    renderPending();
     renderHistory();
     renderToday();
   }
@@ -584,6 +802,15 @@
     $('statClaim').textContent = data.users.reduce(function(s, u) { return s + u.totalClaim; }, 0);
   }
 
+  function renderUsersHint() {
+    const hint = $('usersHint');
+    if (isAdmin) {
+      hint.innerHTML = '✨ 管理模式：按住右上角 ⠿ 可拖动调整顺序 · 可添加小伙伴 · 可删除历史记录';
+    } else {
+      hint.innerHTML = '👀 访客模式：可领取鸡蛋、申请充值（充值需 <span class="rconfig-hint">琉Q确认</span> 后才会到账）';
+    }
+  }
+
   function renderUsers() {
     const grid = $('usersGrid');
     grid.innerHTML = '';
@@ -592,8 +819,10 @@
       const color = COLOR_PALETTE[user.colorIdx % COLOR_PALETTE.length];
       const card = document.createElement('div');
       card.className = 'user-card';
+      card.dataset.uid = user.id;
       card.style.setProperty('--accent', color);
       card.innerHTML =
+        (isAdmin ? '<div class="drag-handle" title="按住拖动排序">⠿</div>' : '') +
         '<div class="user-header">' +
           '<div class="user-avatar" style="background: ' + color + ';">' + escapeHtml(getInitial(user.name)) + '</div>' +
           '<div class="user-name">' + escapeHtml(user.name) + '</div>' +
@@ -608,17 +837,65 @@
           '<div class="mini-stat"><span class="mini-stat-label">累计领取</span><span class="mini-stat-value">' + user.totalClaim + '</span></div>' +
         '</div>' +
         '<div class="user-actions">' +
-          '<button class="btn btn-recharge" data-action="recharge" data-uid="' + user.id + '">💰 充值</button>' +
+          '<button class="btn btn-recharge" data-action="recharge" data-uid="' + user.id + '">' + (isAdmin ? '💰 充值' : '💸 申请充值') + '</button>' +
           '<button class="btn btn-claim" data-action="claim" data-uid="' + user.id + '">🍳 领取</button>' +
         '</div>';
       grid.appendChild(card);
     });
 
-    const addCard = document.createElement('div');
-    addCard.className = 'add-user-card';
-    addCard.dataset.action = 'add-user';
-    addCard.innerHTML = '<div class="add-icon">➕</div><div class="add-text">添加小伙伴</div>';
-    grid.appendChild(addCard);
+    if (isAdmin) {
+      const addCard = document.createElement('div');
+      addCard.className = 'add-user-card';
+      addCard.dataset.action = 'add-user';
+      addCard.innerHTML = '<div class="add-icon">➕</div><div class="add-text">添加小伙伴</div>';
+      grid.appendChild(addCard);
+    }
+  }
+
+  function renderPending() {
+    const container = $('pendingContent');
+    const list = data.pending || [];
+    const badge = $('pendingBadge');
+    badge.textContent = list.length;
+    badge.classList.toggle('show', list.length > 0);
+
+    if (list.length === 0) {
+      container.innerHTML =
+        '<div class="empty-state">' +
+        '<span class="emoji">✅</span>' +
+        '<div class="text">没有待确认的充值~</div>' +
+        '<div class="text" style="font-size: 14px; margin-top: 8px;">' +
+          (isAdmin ? '小伙伴申请充值后会出现在这里' : '申请充值后，等琉Q确认就会到账') +
+        '</div>' +
+        '</div>';
+      return;
+    }
+
+    let html = '';
+    list.forEach(function(p) {
+      const user = data.users.find(function(u) { return u.id === p.userId; });
+      const color = user ? COLOR_PALETTE[user.colorIdx % COLOR_PALETTE.length] : COLOR_PALETTE[0];
+      html +=
+        '<div class="pending-card">' +
+          '<div class="pending-top">' +
+            '<div class="user-avatar" style="background: ' + color + ';">' + escapeHtml(getInitial(p.userName)) + '</div>' +
+            '<div class="pending-info">' +
+              '<div class="pending-name">' + escapeHtml(p.userName) + '</div>' +
+              '<div class="pending-meta">💵 ¥' + p.money + ' · ' + formatDate(p.time) + '</div>' +
+            '</div>' +
+            '<div class="pending-eggs">+' + p.eggs + ' 🥚</div>' +
+          '</div>' +
+          (p.requestedBy ? '<div class="pending-note">📝 ' + escapeHtml(p.requestedBy) + '</div>' : '') +
+          (isAdmin
+            ? '<div class="pending-actions">' +
+                '<button class="btn-approve" data-action="approve" data-pid="' + p.id + '">✅ 确认到账</button>' +
+                '<button class="btn-reject" data-action="reject" data-pid="' + p.id + '">❌ 拒绝</button>' +
+              '</div>'
+            : '<div class="pending-waiting">⏳ 等待琉Q确认中...</div>'
+          ) +
+        '</div>';
+    });
+    container.innerHTML = html;
   }
 
   function renderHistory() {
@@ -654,12 +931,12 @@
             '<div class="history-icon ' + (isRecharge ? 'recharge' : 'claim') + '">' + (isRecharge ? '💰' : '🍳') + '</div>' +
             '<div class="history-info">' +
               '<div class="history-name">' + escapeHtml(h.userName) + ' · ' + (isRecharge ? '充值' : '领取') + '</div>' +
-              '<div class="history-time">' + formatDate(h.time) + (h.money ? ' · ¥' + h.money : '') + '</div>' +
+              '<div class="history-time">' + formatDate(h.time) + (h.money ? ' · ¥' + h.money : '') + (h.requestedBy ? ' · ' + escapeHtml(h.requestedBy) : '') + '</div>' +
             '</div>' +
             '<div class="history-amount ' + (isRecharge ? 'plus' : 'minus') + '">' +
               (isRecharge ? '+' : '-') + h.amount + ' 🥚' +
             '</div>' +
-            '<button class="history-delete" data-action="delete-history" data-hid="' + h.id + '" title="删除">×</button>' +
+            (isAdmin ? '<button class="history-delete" data-action="delete-history" data-hid="' + h.id + '" title="删除">×</button>' : '') +
           '</div>';
       });
       html += '</div></div>';
@@ -764,7 +1041,21 @@
     $('rechargeAvatar').textContent = getInitial(user.name);
     $('rechargeAvatar').style.background = color;
     $('rechargeMoney').value = '';
+    $('rechargeNote').value = '';
     $('eggCount').textContent = '🥚 可换 0 个鸡蛋（2元 = 3个）';
+
+    if (isAdmin) {
+      $('rechargeModalTitle').textContent = '💰 给小伙伴充值';
+      $('rechargeNoteGroup').style.display = 'none';
+      $('rechargeModeHint').style.display = 'none';
+      $('confirmRechargeBtn').textContent = '确认充值 ✨';
+    } else {
+      $('rechargeModalTitle').textContent = '💸 申请充值';
+      $('rechargeNoteGroup').style.display = 'block';
+      $('rechargeModeHint').style.display = 'block';
+      $('confirmRechargeBtn').textContent = '提交申请 ✨';
+    }
+
     $('rechargeModal').classList.add('active');
     setTimeout(function() { $('rechargeMoney').focus(); }, 100);
   }
@@ -793,9 +1084,7 @@
     setTimeout(function() { $('newUserName').focus(); }, 100);
   }
 
-  function closeModal(id) {
-    $(id).classList.remove('active');
-  }
+  function closeModal(id) { $(id).classList.remove('active'); }
 
   function updateEggCount() {
     const money = parseFloat($('rechargeMoney').value) || 0;
@@ -814,30 +1103,95 @@
     busy = true;
     const btn = $('confirmRechargeBtn');
     btn.disabled = true;
-    btn.textContent = '同步中...';
+    btn.textContent = '提交中...';
     setSyncStatus('ok', '同步中...');
 
     try {
-      const res = await apiCall('/api/recharge', {
-        method: 'POST',
-        body: { userId: currentUserId, money: money }
-      });
-      if (res.ok) {
+      if (isAdmin) {
+        const res = await apiCall('/api/recharge', {
+          method: 'POST',
+          body: { userId: currentUserId, money: money, pin: adminPin }
+        });
+        if (!res.ok) throw new Error(res.error);
         data = res.data;
         render();
         closeModal('rechargeModal');
         showToast('✨ ' + res.userName + ' 充值 ' + res.eggs + ' 个鸡蛋成功！');
         setSyncStatus('ok', '云端已同步');
       } else {
-        throw new Error(res.error);
+        const note = $('rechargeNote').value.trim();
+        const res = await apiCall('/api/recharge-request', {
+          method: 'POST',
+          body: { userId: currentUserId, money: money, requestedBy: note }
+        });
+        if (!res.ok) throw new Error(res.error);
+        data = res.data;
+        render();
+        closeModal('rechargeModal');
+        showToast('📨 已提交 ' + res.userName + ' 的充值申请，等琉Q确认~', false, 2600);
+        setSyncStatus('ok', '云端已同步');
+        switchTab('pending');
       }
     } catch (err) {
-      showToast('💔 ' + err.message, true);
+      if (isAdmin) handleAdminError(err); else showToast('💔 ' + err.message, true);
       setSyncStatus('error', '同步失败');
     } finally {
       busy = false;
       btn.disabled = false;
-      btn.textContent = '确认充值 ✨';
+      btn.textContent = isAdmin ? '确认充值 ✨' : '提交申请 ✨';
+    }
+  }
+
+  async function confirmPending(pendingId) {
+    if (busy) return;
+    if (!isAdmin) { showToast('🔒 需要琉Q登录'); return; }
+    busy = true;
+    setSyncStatus('ok', '确认中...');
+    try {
+      const res = await apiCall('/api/confirm-recharge', {
+        method: 'POST',
+        body: { pendingId: pendingId, pin: adminPin }
+      });
+      if (res.ok) {
+        data = res.data;
+        render();
+        showToast('✨ 已为 ' + res.userName + ' 充值 ' + res.eggs + ' 个鸡蛋！');
+        setSyncStatus('ok', '云端已同步');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      handleAdminError(err);
+      setSyncStatus('error', '同步失败');
+    } finally {
+      busy = false;
+    }
+  }
+
+  async function rejectPending(pendingId) {
+    if (busy) return;
+    if (!isAdmin) { showToast('🔒 需要琉Q登录'); return; }
+    if (!confirm('确定要拒绝这条充值申请吗？')) return;
+    busy = true;
+    setSyncStatus('ok', '处理中...');
+    try {
+      const res = await apiCall('/api/reject-recharge', {
+        method: 'POST',
+        body: { pendingId: pendingId, pin: adminPin }
+      });
+      if (res.ok) {
+        data = res.data;
+        render();
+        showToast('🗑️ 已拒绝 ' + res.userName + ' 的申请');
+        setSyncStatus('ok', '云端已同步');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      handleAdminError(err);
+      setSyncStatus('error', '同步失败');
+    } finally {
+      busy = false;
     }
   }
 
@@ -878,6 +1232,7 @@
 
   async function confirmAddUser() {
     if (busy) return;
+    if (!isAdmin) { showToast('🔒 只有琉Q可以添加小伙伴'); return; }
     const name = $('newUserName').value.trim();
     if (!name) { showToast('💔 请输入名字'); return; }
 
@@ -890,7 +1245,7 @@
     try {
       const res = await apiCall('/api/user', {
         method: 'POST',
-        body: { name: name }
+        body: { name: name, pin: adminPin }
       });
       if (res.ok) {
         data = res.data;
@@ -902,7 +1257,7 @@
         throw new Error(res.error);
       }
     } catch (err) {
-      showToast('💔 ' + err.message, true);
+      handleAdminError(err);
       setSyncStatus('error', '同步失败');
     } finally {
       busy = false;
@@ -913,6 +1268,7 @@
 
   async function deleteHistoryItem(historyId) {
     if (busy) return;
+    if (!isAdmin) { showToast('🔒 只有琉Q可以删除记录'); return; }
     if (!confirm('确定要删除这条记录吗？余额会同步调整哦~')) return;
 
     busy = true;
@@ -921,7 +1277,7 @@
     try {
       const res = await apiCall('/api/delete-history', {
         method: 'POST',
-        body: { historyId: historyId }
+        body: { historyId: historyId, pin: adminPin }
       });
       if (res.ok) {
         data = res.data;
@@ -932,22 +1288,141 @@
         throw new Error(res.error);
       }
     } catch (err) {
-      showToast('💔 ' + err.message, true);
+      handleAdminError(err);
       setSyncStatus('error', '同步失败');
     } finally {
       busy = false;
     }
   }
 
+  // ============ 拖动排序（自定义指针事件，仅管理员）============
+  async function saveOrder(ids) {
+    setSyncStatus('ok', '保存顺序中...');
+    try {
+      const res = await apiCall('/api/reorder', {
+        method: 'POST',
+        body: { order: ids, pin: adminPin }
+      });
+      if (res.ok) {
+        data = res.data; // DOM 已是目标顺序，无需重渲染
+        setSyncStatus('ok', '云端已同步');
+        showToast('✅ 顺序已保存');
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err) {
+      handleAdminError(err);
+      setSyncStatus('error', '保存失败');
+      render(); // 回滚到服务器顺序
+    }
+  }
+
+  function setupDragReorder() {
+    const grid = $('usersGrid');
+    let dragCard = null, placeholder = null, offsetX = 0, offsetY = 0, orderBefore = [];
+
+    function currentOrder() {
+      return Array.prototype.map.call(grid.querySelectorAll('.user-card'), function(c) { return c.dataset.uid; });
+    }
+
+    function onPointerMove(e) {
+      if (!dragCard) return;
+      e.preventDefault();
+      const x = e.clientX, y = e.clientY;
+      dragCard.style.left = (x - offsetX) + 'px';
+      dragCard.style.top = (y - offsetY) + 'px';
+
+      const cards = Array.prototype.slice.call(grid.querySelectorAll('.user-card:not(.dragging-card)'));
+      let closest = null, closestDist = Infinity, closestBox = null;
+      cards.forEach(function(c) {
+        const b = c.getBoundingClientRect();
+        const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+        const d = Math.hypot(x - cx, y - cy);
+        if (d < closestDist) { closestDist = d; closest = c; closestBox = b; }
+      });
+      if (!closest) return;
+
+      let after;
+      if (y < closestBox.top) after = false;
+      else if (y > closestBox.bottom) after = true;
+      else after = x > (closestBox.left + closestBox.width / 2);
+
+      if (after) grid.insertBefore(placeholder, closest.nextSibling);
+      else grid.insertBefore(placeholder, closest);
+    }
+
+    function endDrag() {
+      if (!dragCard) return;
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', endDrag);
+      document.removeEventListener('pointercancel', endDrag);
+
+      grid.insertBefore(dragCard, placeholder);
+      if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
+
+      dragCard.classList.remove('dragging-card');
+      dragCard.style.position = '';
+      dragCard.style.left = '';
+      dragCard.style.top = '';
+      dragCard.style.width = '';
+      dragCard.style.transform = '';
+      dragCard.style.transition = '';
+      dragCard.style.zIndex = '';
+      dragCard.style.pointerEvents = '';
+      document.body.style.userSelect = '';
+
+      dragCard = null;
+      placeholder = null;
+      isDragging = false;
+
+      const newOrder = currentOrder();
+      if (newOrder.join(',') !== orderBefore.join(',')) {
+        saveOrder(newOrder);
+      }
+    }
+
+    grid.addEventListener('pointerdown', function(e) {
+      if (!isAdmin) return;
+      const handle = e.target.closest('.drag-handle');
+      if (!handle) return;
+      const card = handle.closest('.user-card');
+      if (!card) return;
+      e.preventDefault();
+
+      orderBefore = currentOrder();
+      const rect = card.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      placeholder = document.createElement('div');
+      placeholder.className = 'drag-placeholder';
+      placeholder.style.minHeight = rect.height + 'px';
+      grid.insertBefore(placeholder, card);
+
+      card.classList.add('dragging-card');
+      card.style.position = 'fixed';
+      card.style.width = rect.width + 'px';
+      card.style.left = rect.left + 'px';
+      card.style.top = rect.top + 'px';
+      card.style.transform = 'scale(1.03)';
+      card.style.transition = 'none';
+      card.style.zIndex = '999';
+      card.style.pointerEvents = 'none';
+      document.body.style.userSelect = 'none';
+
+      dragCard = card;
+      isDragging = true;
+
+      document.addEventListener('pointermove', onPointerMove, { passive: false });
+      document.addEventListener('pointerup', endDrag);
+      document.addEventListener('pointercancel', endDrag);
+    });
+  }
+
   // ============ 事件绑定 ============
   // Tab 切换
   document.querySelectorAll('.tab').forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-      document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
-      tab.classList.add('active');
-      $('panel-' + tab.dataset.tab).classList.add('active');
-    });
+    tab.addEventListener('click', function() { switchTab(tab.dataset.tab); });
   });
 
   // 用户卡片操作（事件委托）
@@ -959,6 +1434,14 @@
     if (action === 'recharge') openRecharge(uid);
     else if (action === 'claim') openClaim(uid);
     else if (action === 'add-user') openAddUser();
+  });
+
+  // 待确认操作（事件委托）
+  $('pendingContent').addEventListener('click', function(e) {
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
+    if (target.dataset.action === 'approve') confirmPending(target.dataset.pid);
+    else if (target.dataset.action === 'reject') rejectPending(target.dataset.pid);
   });
 
   // 历史记录删除
@@ -1003,10 +1486,18 @@
   $('confirmClaimBtn').addEventListener('click', confirmClaim);
   $('confirmAddUserBtn').addEventListener('click', confirmAddUser);
 
+  // 管理员登录/退出
+  $('adminToggleBtn').addEventListener('click', function() {
+    if (isAdmin) adminLogout(); else openAdminModal();
+  });
+  $('confirmAdminBtn').addEventListener('click', confirmAdminLogin);
+
   // 回车提交
   $('rechargeMoney').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmRecharge(); });
+  $('rechargeNote').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmRecharge(); });
   $('claimAmount').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmClaim(); });
   $('newUserName').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmAddUser(); });
+  $('adminPinInput').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmAdminLogin(); });
 
   // 点击遮罩关闭
   document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
@@ -1015,9 +1506,9 @@
     });
   });
 
-  // 定时刷新（每 30 秒拉一次云端数据）
+  // 定时刷新（每 30 秒拉一次云端数据，拖动中不打断）
   setInterval(function() {
-    if (!busy && document.visibilityState === 'visible') {
+    if (!busy && !isDragging && document.visibilityState === 'visible') {
       apiCall('/api/data').then(function(res) {
         if (res.ok && res.data.updatedAt !== data.updatedAt) {
           data = res.data;
@@ -1029,13 +1520,19 @@
 
   // 页面重新可见时刷新
   document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible' && !busy) {
+    if (document.visibilityState === 'visible' && !busy && !isDragging) {
       loadData();
     }
   });
 
-  // 启动
-  loadData();
+  // ============ 启动 ============
+  setupDragReorder();
+  try {
+    const storedPin = localStorage.getItem(ADMIN_KEY);
+    if (storedPin) { adminPin = storedPin; isAdmin = true; }
+  } catch (e) {}
+  updateAdminHeader();
+  loadData().then(function(ok) { if (ok) verifyStoredAdmin(); });
 })();
 </script>
 
