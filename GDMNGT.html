@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>42天儿保门诊双队列入组方案 | 出生队列补充方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f5;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            padding: 40px 20px;
+            color: #1a2c3e;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 0 0 40px 0;
+        }
+
+        /* 页眉/头部 */
+        .header {
+            background: linear-gradient(135deg, #0b3b4f 0%, #1b6b6f 100%);
+            color: white;
+            padding: 32px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 12px;
+        }
+
+        .header .sub {
+            font-size: 1rem;
+            opacity: 0.9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 12px;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        /* 内容区 */
+        .content {
+            padding: 32px 40px;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: #f9fbfd;
+            border-radius: 24px;
+            padding: 24px 28px;
+            margin-bottom: 32px;
+            border: 1px solid #e2edf2;
+            transition: box-shadow 0.2s;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #cbdde6;
+            padding-bottom: 12px;
+        }
+
+        .card-header .icon {
+            font-size: 28px;
+        }
+
+        .card-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #155f6b;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f7b7a;
+        }
+
+        .highlight {
+            background: #e6f4f0;
+            padding: 18px 20px;
+            border-left: 6px solid #188b7e;
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .queue-box {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #dce9ef;
+        }
+
+        .queue-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gdm-tag {
+            background: #fef1e0;
+            color: #b45f1b;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .normal-tag {
+            background: #e0f0fa;
+            color: #176b87;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: #188b7e;
+            color: white;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        th {
+            background: #e2edf2;
+            padding: 12px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 12px;
+            border-bottom: 1px solid #d4e2e8;
+            vertical-align: top;
+        }
+
+        .responsive-table {
+            overflow-x: auto;
+        }
+
+        .btn-mention {
+            background: #eef2fa;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        footer {
+            margin-top: 32px;
+            text-align: center;
+            color: #6f8f9c;
+            font-size: 0.8rem;
+            border-top: 1px solid #e0edf2;
+            padding-top: 24px;
+        }
+
+        @media (max-width: 760px) {
+            .content {
+                padding: 20px;
+            }
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📋 42天儿保门诊 · 双队列入组补充方案</h1>
+        <p style="font-size: 1.1rem; margin-top: 8px;">GDM干预队列 ＋ 正常出生队列 | 高效衔接 · 缺样本不缺数据</p>
+        <div class="sub">
+            <span>🏥 适用场景：42天新生儿常规体检</span>
+            <span>⭐ 执行科室：儿保科主导</span>
+            <span>📅 版本：V2.0 / 2026年6月</span>
+        </div>
+    </div>
+    <div class="content">
+        <!-- 核心原则 -->
+        <div class="highlight">
+            🎯 <strong>核心原则</strong>：“缺围产期生物样本，不缺42天~24月龄完整随访数据”<br>
+            只要后续随访数据完整，即使无脐带血/胎盘/胎便，依然具备极高科研与临床价值。
+        </div>
+
+        <!-- 两个队列 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">👩‍👧</span>
+                <h2>分流标准 · 双队列定义</h2>
+            </div>
+            <div class="grid-2col">
+                <div class="queue-box">
+                    <div class="queue-title">
+                        🧪 GDM干预队列 
+                        <span class="gdm-tag">妊娠期糖尿病</span>
+                    </div>
+                    <p><strong>入组条件：</strong> 母亲孕期明确诊断GDM（OGTT或病历记录）</p>
+                    <p><strong>后续执行：</strong> 完全按主方案执行（3、6、8、12、18、24月龄……）</p>
+                    <p><strong>缺失说明：</strong> ⚠️ 无围产期生物样本（脐带血/胎盘/胎便）<br>✅ 其他临床表型、体格、发育、问卷完整</p>
+                </div>
+                <div class="queue-box">
+                    <div class="queue-title">
+                        🌱 正常出生队列 
+                        <span class="normal-tag">血糖正常 · NGT</span>
+                    </div>
+                    <p><strong>入组条件：</strong> 母亲孕期血糖正常（75g OGTT完全正常）</p>
+                    <p><strong>后续执行：</strong> 同期前瞻性对照，完全按主方案随访</p>
+                    <p><strong>缺失说明：</strong> ⚠️ 同样缺失围产期生物样本<br>✅ 生长轨迹、多器官超声、神经行为均完整采集</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 门诊操作SOP -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🩺</span>
+                <h2>门诊操作SOP（三步法 · 5~8分钟）</h2>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">1</div>
+                <div><strong style="font-size:1.05rem;">筛查分流（10秒）</strong><br>
+                分诊护士/儿保医生询问：“妈妈怀孕时血糖高不高？有没有妊娠期糖尿病？”<br>
+                ✅ 有GDM → GDM干预队列 &nbsp;&nbsp;✅ 无GDM → 正常出生队列
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">2</div>
+                <div><strong style="font-size:1.05rem;">研究专员沟通 + 知情同意（3~5分钟）</strong><br>
+                • 介绍研究价值：国家级出生队列，免费评估报告+小礼品<br>
+                • 强调便利性：不额外跑路，借常规体检完成<br>
+                • 签署电子/纸质知情同意书（精简版）
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">3</div>
+                <div><strong style="font-size:1.05rem;">电子问卷 + 研究ID绑定（5~8分钟）</strong><br>
+                • 母亲手机扫码填写回顾性基线（孕前BMI、OGTT、分娩信息等）<br>
+                • 专员协助录入42天体格数据（身长/体重/头围）<br>
+                • 分配研究ID，录入REDCap系统，与门诊ID绑定
+                </div>
+            </div>
+            <div class="highlight" style="margin-top: 12px;">
+                💡 完成后继续常规42天体检，完全不干扰正常诊疗流程。
+            </div>
+        </div>
+
+        <!-- 随访体系 + 跨中心衔接 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">📆</span>
+                <h2>随访体系 · 与主方案完全一致</h2>
+            </div>
+            <div class="responsive-table">
+                <table>
+                    <thead>
+                        <tr><th>月龄</th><th>核心内容</th><th>数据价值</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>42天（入组）</td><td>体格、基线问卷、知情</td><td>确立队列起点</td></tr>
+                        <tr><td>3月龄</td><td>喂养评估、ASQ-3、体格</td><td>早期生长轨迹</td></tr>
+                        <tr><td>6月龄</td><td>体成分(BIA)、血常规、辅食调查</td><td>关键代谢窗口</td></tr>
+                        <tr><td>8月龄</td><td>发育筛查、睡眠行为</td><td>神经行为监测</td></tr>
+                        <tr><td>12月龄</td><td>心脏/腹部超声、血生化、Bayley筛查</td><td>多器官表型</td></tr>
+                        <tr><td>18月龄</td><td>语言运动、CBCL</td><td>行为情绪评估</td></tr>
+                        <tr><td><strong>24月龄</strong></td><td><strong>主要结局判定（超重/肥胖）</strong> + 全面超声/代谢</td><td>核心终点</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 16px; background: #f0f6fa; border-radius: 18px; padding: 16px;">
+                <strong>🧩 缺失数据科学处理：</strong> 围产期生物样本缺失 ➜ 数据分析时标记为“产后入组亚组”，开展敏感性分析，不影响主分析效力。
+            </div>
+        </div>
+
+        <!-- 跨中心随访衔接（核心重点） -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🔄</span>
+                <h3>跨中心随访衔接 · 解决换中心难题</h3>
+            </div>
+            <div class="responsive-table">
+                <table>
+                    <thead><tr><th>常见场景</th><th>解决机制</th></tr></thead>
+                    <tbody>
+                        <tr><td>家庭搬迁或更换城市（江西⇄重庆⇄四川⇄贵州）</td><td>全国统一<strong>REDCap电子数据系统</strong>，凭研究ID或身份信息检索，无缝延续随访</td></tr>
+                        <tr><td>如何避免重复入组？</td><td>系统自动校验：已有入组记录则禁止二次分配新ID，仅延续随访</td></tr>
+                        <tr><td>新中心如何操作？</td><td>输入原ID，确认身份后按标准流程完成当前节点数据录入</td></tr>
+                        <tr><td>经费与劳务归属</td><td>“谁随访、谁获益” —— 完成随访节点的中心获得对应劳务及礼品费用</td></tr>
+                        <tr><td>家长需要做什么？</td><td>只需告知新中心“我在XX项目入组，ID号XXX”，无需额外手续</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="highlight" style="margin-top: 16px;">
+                ✅ 入组时即告知家长：若后续去往其他协作医院（重庆医科大学附属儿童医院、三峡医院、永川医院、射洪/习水妇幼等），可继续接受同质化随访。
+            </div>
+        </div>
+
+        <!-- 科室支持资源 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🛠️</span>
+                <h2>科室支持资源（落地关键）</h2>
+            </div>
+            <div class="grid-2col">
+                <div>
+                    <ul style="margin-left: 20px; line-height: 1.7;">
+                        <li><strong>👤 研究专员 1名（可兼职/轮值）</strong> – 负责筛查、知情、问卷辅助，门诊效率保障</li>
+                        <li><strong>🎁 入组礼品</strong> – 20-30元/人（湿巾、量高尺、婴儿方巾等），提升家长配合度</li>
+                        <li><strong>📱 平板电脑/二维码立牌</strong> – 知情同意与问卷星/REDCap快捷入口</li>
+                        <li><strong>📋 一页纸SOP手册</strong> – 规范专员操作，培训后即上岗</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul style="margin-left: 20px; line-height: 1.7;">
+                        <li><strong>💾 REDCap访问权限</strong> – 分配分中心账号，实时录入与质控</li>
+                        <li><strong>🏥 门诊绿色协作</strong> – 儿保体检流程中预留5~8分钟研究时间</li>
+                        <li><strong>📊 跨中心协调授权</strong> – 允许其他协作中心查询并延续随访</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 价值主张 和 快速沟通话术 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🗣️</span>
+                <h2>研究专员 · 沟通话术模板（30秒版）</h2>
+            </div>
+            <div style="background: #ffffff; border-radius: 20px; padding: 16px 20px; border: 1px solid #cbdfe8;">
+                <p style="font-style: italic; color: #1e5663;">“您好，根据宝宝妈妈孕期的情况（GDM/血糖正常），您和孩子符合我们一项国家级健康研究项目。后续宝宝来体检时，只需要多填几份线上问卷，我们免费提供额外生长发育评估报告和个性化喂养建议，每次还有小礼品。完全不耽误今天体检，也不额外跑路。我简单给您介绍一下？”</p>
+            </div>
+            <div style="margin-top: 20px;">
+                <span class="btn-mention">📢 关键获益：免费发育报告 + 优先就诊通道 + 科研贡献感</span>
+                <span class="btn-mention" style="margin-left: 10px;">🎯 入组即送实用母婴礼包</span>
+            </div>
+        </div>
+
+        <!-- 重要补充说明：缺失数据与伦理 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">⚖️</span>
+                <h2>伦理 · 知情同意要点</h2>
+            </div>
+            <ul style="margin-left: 24px; margin-bottom: 12px;">
+                <li>42天入组须获得母亲本人知情同意（书面/电子）</li>
+                <li>明确告知：入组后缺少围产期生物样本（脐带血/胎盘/胎便），但后续所有生长发育、超声、代谢数据完整采集</li>
+                <li>随时可退出，不影响任何常规医疗权益</li>
+                <li>生物样本和数据的处理严格遵守《人类遗传资源管理条例》，跨中心数据共享已备案</li>
+            </ul>
+            <div style="background:#fef7e0; border-radius: 16px; padding: 12px 18px; margin-top: 8px;">
+                📌 所有入组受试者均分配唯一研究ID，个人信息与科研数据分离存储，隐私严格保护。
+            </div>
+        </div>
+
+        <!-- 一句话总结 -->
+        <div class="highlight" style="background: #e1f0ed; text-align: center;">
+            🌟 <strong>一句话总结</strong>：“42天门诊一句话分流（GDM / 正常），缺的不是数据，只是出生时的一管血，但能得到2年完整随访，支持跨中心延续，效率高、成本低。”
+        </div>
+
+        <!-- 附件建议及负责人寄语 -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 24px;">
+            <div style="background: #f8fafc; border-radius: 20px; padding: 18px; flex:1;">
+                <strong>📎 配套工具清单（可提供）</strong>
+                <ul style="margin-top: 10px;">
+                    <li>□ 门诊筛查分流记录表</li>
+                    <li>□ 知情同意书（门诊简版）</li>
+                    <li>□ 研究专员一页纸操作手册</li>
+                    <li>□ REDCap快速入组字段模板</li>
+                    <li>□ 跨中心随访联系函（模板）</li>
+                </ul>
+            </div>
+            <div style="background: #f8fafc; border-radius: 20px; padding: 18px; flex:1;">
+                <strong>👥 给儿保负责人的行动建议</strong>
+                <ul style="margin-top: 10px;">
+                    <li>✓ 本周内确定研究专员人选（护士/医生均可）</li>
+                    <li>✓ 申请入组小礼品预算（按预计入组量300-400例）</li>
+                    <li>✓ 与信息科协调REDCap外网访问及HIS数据提取</li>
+                    <li>✓ 纳入科室绩效考核加分（科研工作量）</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            🔬 牵头单位：重庆医科大学附属儿童医院 梁小华教授团队 | 本补充方案经多中心协作组审核<br>
+            版本日期：2026年6月11日 · 适用于儿保科42天门诊双队列入组及跨中心延续随访
+        </footer>
+    </div>
+</div>
+</body>
+</html>
